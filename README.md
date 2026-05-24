@@ -39,29 +39,52 @@ chmod +x o11_v22b1-DRMStuff
 
 ### 🔄 Auto‑Start on Boot (স্বয়ংক্রিয়ভাবে চালু)
 
-Create a systemd service file at `/etc/systemd/system/o11ott.service`:
 
-```ini
-[Unit]
-Description=O11 OTT v2.2b1 Streamer
-After=network.target
+### ✅ Steps to Enable Auto‑Start on Boot
+1. **Create a systemd service file**  
+   ```bash
+   sudo nano /etc/systemd/system/o11ott.service
+   ```
+   
+2. **Add the following content** (adjust paths if needed):
+   ```ini
+   [Unit]
+   Description=O11 OTT V2.2b1 DRMStuff Service
+   After=network.target
 
-[Service]
-ExecStart=/root/o11-OTT-v2.2b1/o11_v22b1-DRMStuff
-WorkingDirectory=/root/o11-OTT-v2.2b1
-Restart=always
-User=root
+   [Service]
+   Type=simple
+   WorkingDirectory=/root/O11-OTT-V2.2b1
+   ExecStart=/root/O11-OTT-V2.2b1/o11_v22b1-DRMStuff
+   Restart=always
+   RestartSec=5
 
-[Install]
-WantedBy=multi-user.target
-```
+   [Install]
+   WantedBy=multi-user.target
+   ```
 
-Enable and start:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable o11ott.service
-sudo systemctl start o11ott.service
-```
+   - `WorkingDirectory` points to the folder where your binary lives.  
+   - `ExecStart` is the command you currently run manually.  
+   - `Restart=always` ensures it comes back if it crashes.  
+
+3. **Reload systemd and enable the service**  
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl enable o11ott.service
+   sudo systemctl start o11ott.service
+   ```
+
+4. **Check status**  
+   ```bash
+   systemctl status o11ott.service
+   ```
+
+### 🔄 Alternative (quick & dirty)
+If you don’t want to use systemd, you could add the command to `/etc/rc.local` or a cron job with `@reboot`, but systemd is far more reliable and gives you logging + restart control.
+
+---
+
+
 
 👉 **Bangla Note:**  
 ```markdown
